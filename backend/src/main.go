@@ -10,6 +10,12 @@ import (
 func main() {
 	r := mux.NewRouter()
 
+	r.HandleFunc("/ping", func(rw http.ResponseWriter, r *http.Request) {
+		fmt.Sprintln("[ping!]: %r ", r.RemoteAddr)
+		rw.Header().Set("Content-Type", "application/json")
+		rw.WriteHeader(http.StatusOK)
+		fmt.Fprint(rw, "ping!")
+	})
 	r.HandleFunc("/books/{title}/page/{page}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		title := vars["title"]
