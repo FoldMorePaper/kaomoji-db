@@ -1,28 +1,21 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
 
+func YourHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Gorilla!\n"))
+}
+
 func main() {
 	r := mux.NewRouter()
+	// Routes consist of a path and a handler function.
+	r.HandleFunc("/", YourHandler)
 
-	r.HandleFunc("/ping", func(rw http.ResponseWriter, r *http.Request) {
-		fmt.Sprintln("[ping!]: %r ", r.RemoteAddr)
-		rw.Header().Set("Content-Type", "application/json")
-		rw.WriteHeader(http.StatusOK)
-		fmt.Fprint(rw, "ping!")
-	})
-	r.HandleFunc("/books/{title}/page/{page}", func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		title := vars["title"]
-		page := vars["page"]
-
-		fmt.Fprintf(w, "You've requested the book: %s on page %s\n", title, page)
-	})
-
-	http.ListenAndServe(":80", r)
+	// Bind to a port and pass our router in
+	log.Fatal(http.ListenAndServe(":8000", r))
 }
