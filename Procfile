@@ -1,1 +1,2 @@
-web: go run ./backend/src/main.go
+build: go build
+web: bin/kaomoji-db
