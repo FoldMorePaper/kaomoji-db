@@ -1,0 +1,1 @@
+web: go run ./backend/src/main.go
